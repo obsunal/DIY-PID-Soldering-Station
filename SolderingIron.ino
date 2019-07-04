@@ -88,11 +88,11 @@ void change_mode () {
     Serial.write(state);
   }
 }
-
+//To Be Implemented
 int convert_to_temp (int adc_value) {
   return 0;
 }
-
+//To Be Implemented
 int convert_to_adc (int temp) {
   return 1;
 }
