@@ -9,6 +9,7 @@ To do:
 >  - [ ] Fix the shunt resistor placement
 >  - [ ] Fix the PWM pins
 >  - [ ] Remove External x-tall (Atmega8 - can also change to 8mhz value but personally don't see point.)
+>  - [ ] Also Fix Versioning
 
 >## [x] (AVR) Standalone Schematics
 
