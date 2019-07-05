@@ -6,6 +6,9 @@ To do:
 
 > ## General
 >  - [ ] Fix Issue with Having Encoder to Adjust (not enough interrupts, mostly related to AVR and PIC) 
+>  - [ ] Fix the shunt resistor placement
+>  - [ ] Fix the PWM pins
+>  - [ ] Remove External x-tall (Atmega8 - can also change to 8mhz value but personally don't see point.)
 
 >## [x] (AVR) Standalone Schematics
 
