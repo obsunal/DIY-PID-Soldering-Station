@@ -4,6 +4,9 @@ Soldering Iron/Heat Gun Controller
 
 To do:
 
+> ## General
+>  - [ ] Fix Issue with Having Encoder to Adjust (not enough interrupts, mostly related to AVR and PIC) 
+
 >## [x] (AVR) Standalone Schematics
 
 >  - [x] Temperature NTCs
