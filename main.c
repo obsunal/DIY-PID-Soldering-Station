@@ -9,9 +9,12 @@
 #include <stdlib.h>
 #include <avr/interrupt.h>
 #define F_CPU 8000000
+#define menu_key PD5
+#define down_key PD6
+#define up_key  PD7
 
 //values for PID
-int8_t pwm_value;
+uint8_t pwm_value;
 int current_pos;
 	
 int goal = 270;
@@ -27,25 +30,26 @@ double kp;
 double ki;
 double kd;
 
-double read_pos();
+int read_pos();
 void set_pwm(int8_t pwm_value);
 
-char state = "Booting";
+char state = "Booting...";
 
 int main(void) {
 	DDRB |= (1 << DDB3);	//Set PWM pin output
 	
-	
-	DDRD &= ~(1 << DDD2);	//Interrupt 1 input
-	PORTD |= (1 << PD2);	//Interrupt 1 pull-up
+	DDRD &= ~(1 << DDD2) & ~(1 << DDD5) & ~(1 << DDD6) & ~(1 << DDD7);	//Interrupt 1 and ok key, up key, down key  input
+	PORTD |= (1 << PD2) & ~(1 << menu_key) & ~(1 << down_key) & ~(1 << up_key);		//Interrupt 1 and PD5 pull-up
 	
 	MCUCR |= (1 << ISC00);	//make interrupt 0's mode logic change
 	GICR |= (1 << INT0);	//Assign Interrupt 0
 	sei();					//Starts Interrupts
 	
+	state = "Ready!";
 	
-	
-	set_pwm(255);
+	while ((PIND & (1 << PIND5)) > 0) {
+		
+	}
 	
 	while (1) {
 		current_pos = read_pos();
@@ -62,10 +66,26 @@ int main(void) {
 }
 
 ISR (INT0_vect) {
-	if((PIND & (1 << PIND0)) == 0) {
+	if((PIND & (1 << PIND2)) == 0) {
 		goal = idle;
 	}
 	else {
 		goal = target;
 	}
+}
+
+int read_pos() {
+	int adc_value;
+	ADMUX = 0b11000011;					//Choose ADC and Configure Internal Reference
+	ADCSRA = 0b00000111;				//Choose pre-scaler to be 16
+	ADMUX |= (1 << ADEN);				//Start ADC
+	ADCSRA |= (1 << ADSC);				//Start Conversation
+	while(ADCSRA & (1 << ADSC));		//Wait for Conversation to end
+	adc_value = ADCL;					//Can be combined with next line but
+	adc_value = (ADCH << 8) + adc_value	//IDK how compiler works, so don't want to loose reading
+	return adc_value;					//Because of compiler optimizations.
+}
+
+void set_pwm(int8_t pwm_value) {
+	
 }
